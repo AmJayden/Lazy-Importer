@@ -1,5 +1,5 @@
 # Lazy-Importer
-minimalistic msvc-windows exclusive lazy importer for C++
+minimalistic msvc-windows exclusive lazy importer for C++20 (c++2a)
 
 ## Credits
 * 0x90 ([@AmJayden](https://github.com/AmJayden))
