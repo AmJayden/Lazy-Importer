@@ -4,7 +4,6 @@
 
 int main()
 {
-    
     auto handle = LAZY_IMPORT_MODULE("ntdll.dll");
 
     char buffer[MAX_PATH]{ 0 };
