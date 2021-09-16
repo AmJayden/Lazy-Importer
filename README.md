@@ -21,3 +21,31 @@ Allowing you to get a pointer to your import, but on runtime instead of compile 
 In order for a reverse engineer to see your lazily imported calls, they must debug and step through to your call.
 
 When combined with anti debug or anti dynamic reverse engineering techniques, it can be very difficult to resolve your imported function.
+
+## Usage
+### Lazily importing by module
+To lazily import a function with a specific module in mind, do the following.
+```cpp
+auto f = LAZY_IMPORT_MOD("Kernel32.dll", CloseHandle);
+```
+With the first argument being a string containing the case insensitive name of your module.
+
+The second argument may be a function, who's hash will be searched for throughout that module.
+
+
+### Lazily importing regardless of module
+In order to lazily import a function, regardless of which module it's in, do the following.
+```cpp
+auto f = LAZY_IMPORT(CloseHandle);
+```
+The code above will scan for `CloseHandle`'s hash throughout all present modules, and use the first match.
+
+
+### Lazily importing a module handle
+To get the handle of a module lazily, do the following.
+```cpp
+auto handle = LAZY_IMPORT_MODULE("ntdll.dll");
+```
+The first argument passed to `LAZY_IMPORT_MODULE` will be hashed and scanned throughout the present modules.
+
+The first occurence of the hash will be used, and it's handle will be returned (`HMODULE`)
