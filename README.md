@@ -11,6 +11,7 @@ By hashing the name of the function we want to import, and the module it holds o
 
 ## What're the benefits?
 When an import is retrieved on compile time, there's a call to the pointer in `.idata`. 
+
 A reverse engineer can use this to their advantage, cross referencing it back to your function, and seeing how you call your import.
 
 When lazy importing, your import information is hashed on compile time, then compared with hashes generated on runtime.
