@@ -7,6 +7,7 @@ minimalistic msvc-windows exclusive lazy importer for C++
 
 ## What is this?
 This lazy importer allows you to dynamically retrieve imported functions and modules.
+
 By hashing the name of the function we want to import, and the module it holds on compile time, we can loop through all modules and compare them, then loop through their exports to retrieve the import.
 
 ## What're the benefits?
