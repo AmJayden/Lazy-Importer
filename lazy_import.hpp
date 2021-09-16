@@ -156,7 +156,7 @@ namespace lazy_importer
 
             if (module_entry->dll_base)
             {
-                const wchar_t* module_wide_name = module_entry->base_name.Buffer;
+                const auto module_wide_name = module_entry->base_name.Buffer;
 
                 char module_name[256];
                 util::wide_to_ascii(module_name, module_wide_name);
@@ -185,6 +185,9 @@ namespace lazy_importer
     {
         auto module_handle = get_module_handle(dll_hash);
 
+        if (!module_handle)
+            return {};
+        
         const auto dos_header = reinterpret_cast<PIMAGE_DOS_HEADER>(module_handle);
 
         const auto nt_headers = reinterpret_cast<PIMAGE_NT_HEADERS>(module_handle + dos_header->e_lfanew);
@@ -236,7 +239,7 @@ namespace lazy_importer
 
             if (module_entry->dll_base)
             {
-                const wchar_t* module_wide_name = module_entry->base_name.Buffer;
+                const auto module_wide_name = module_entry->base_name.Buffer;
 
                 char module_name[256];
                 util::wide_to_ascii(module_name, module_wide_name);
