@@ -23,6 +23,8 @@ In order for a reverse engineer to see your lazily imported calls, they must deb
 When combined with anti debug or anti dynamic reverse engineering techniques, it can be very difficult to resolve your imported function.
 
 ## Usage
+In the case of failure, all functions will return `0` to substitute.
+
 ### Lazily importing by module
 To lazily import a function with a specific module in mind, do the following.
 ```cpp
