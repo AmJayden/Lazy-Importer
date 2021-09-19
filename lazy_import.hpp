@@ -99,7 +99,9 @@ namespace lazy_importer
         inline constexpr auto offset = 0xcbf29ce484222325ull;
         inline constexpr auto prime = 1099511628211ull;
 
-        constexpr std::uint64_t hash_str(const char* const str)
+        // not forceinlining right here may generate a 
+        // stub and function calls if optimization is not happening
+        constexpr LAZY_IMPORT_INLINE std::uint64_t hash_str(const char* const str)
         {
             // dumb method of obtaining size
             auto sz = 0u;
@@ -122,14 +124,14 @@ namespace lazy_importer
     namespace util
     {
         // basic conversion function using no calls and checking ascii range
-        __forceinline void wide_to_ascii(char* const buffer, const wchar_t* const wide_char)
+        LAZY_IMPORT_INLINE void wide_to_ascii(char* const buffer, const wchar_t* const wide_char)
         {
             for (auto i = 0u; wide_char[i] >= 0x20 && wide_char[i] <= 0x7E; ++i)
                 buffer[i] = static_cast<char>(wide_char[i]);
         }
     }
 
-    __forceinline detail::PEB_LDR_DATA* get_peb_ldr()
+    LAZY_IMPORT_INLINE detail::PEB_LDR_DATA* get_peb_ldr()
     {
 #ifdef _M_IX86
         return reinterpret_cast<detail::PEB_LDR_DATA*>(reinterpret_cast<PTEB>(__readfsdword(reinterpret_cast<std::uintptr_t>(&static_cast<NT_TIB*>(nullptr)->Self)))->ProcessEnvironmentBlock->Ldr);
@@ -138,7 +140,7 @@ namespace lazy_importer
 #endif
     }
 
-    __forceinline std::uint8_t* get_module_handle(const std::uint64_t dll_hash)
+    LAZY_IMPORT_INLINE std::uint8_t* get_module_handle(const std::uint64_t dll_hash)
     {
         auto peb_ldr_data = get_peb_ldr();
 
@@ -181,7 +183,7 @@ namespace lazy_importer
     }
 
     // find an export with hash primitives instead of strings
-    __forceinline std::uintptr_t primitive_find_export(std::uint64_t dll_hash, std::uint64_t function_hash)
+    LAZY_IMPORT_INLINE std::uintptr_t primitive_find_export(std::uint64_t dll_hash, std::uint64_t function_hash)
     {
         auto module_handle = get_module_handle(dll_hash);
 
@@ -211,7 +213,7 @@ namespace lazy_importer
 
     // find export with string literals
     template <comp_string dll_name, comp_string function_name>
-    __forceinline std::uintptr_t find_export_mod()
+    LAZY_IMPORT_INLINE std::uintptr_t find_export_mod()
     {
         constexpr auto dll_hash = wrapper_constant_v<hash::hash_str(dll_name.value)>;
         constexpr auto function_hash = wrapper_constant_v<hash::hash_str(function_name.value)>;
@@ -221,7 +223,7 @@ namespace lazy_importer
 
     // find first export matching `function_name` literal under all modules
     template <comp_string function_name>
-    __forceinline std::uintptr_t find_first_export()
+    LAZY_IMPORT_INLINE std::uintptr_t find_first_export()
     {
         constexpr auto function_hash = wrapper_constant_v<hash::hash_str(function_name.value)>;
 
